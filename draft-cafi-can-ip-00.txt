@@ -1,0 +1,637 @@
+INTERNET-DRAFT                             Petr Cach, Petr Fiedler
+Category:Experimental                      Brno University of Technology
+<draft-cafi-can-ip-00.txt>
+March 2001                                 Comments are welcome at:
+Expires: September 2001                    cach@dame.fee.vutbr.cz
+                                           fiedlerp@dame.fee.vutbr.cz
+
+
+
+
+                                IP over CAN
+
+Status of this Memo
+
+   This document is an Internet-Draft and is in full conformance
+   with all provisions of Section 10 of RFC2026.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as
+   Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six
+   months and may be updated, replaced, or obsoleted by other
+   documents at any time.  It is inappropriate to use Internet-
+   Drafts as reference material or to cite them other than as
+   "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+Abstract
+
+   This protocol is intended to allow direct connection of low cost
+   devices to Internet using an inexpensive serial communication bus.
+   Presented protocol is not intended for hard real-time operations.
+
+
+Cach & Fiedler                 Experimental                     [Page N]
+
+INTERNET-DRAFT                  IP over CAN                   March 2001
+
+
+1. Introduction
+
+   At present time there is no standard technology that would allow
+   connection of low cost devices to Internet through inexpensive serial
+   communication bus. To connect low cost devices to Internet the only
+   standardized and inexpensive interface is a point-to-point serial
+   interface (eg. RS-232) using PPP or SLIP protocols. The main
+   disadvantage of these protocols is operation over point-to-point
+   interfaces only.
+
+   In automation there are used inexpensive serial communication bus
+   technologies (eg. RS-485, CAN, etc. ) that allow connection of many
+   devices to a single serial bus and those serial buses could be used
+   to transfer IP protocol datagrams as well. However, there is no
+   standardized protocol that would define how to transfer IP datagrams
+   over such inexpensive serial buses. The purpose of this document is
+   to present a draft specification of a protocol that would define how
+   to transfer IP datagrams over CAN.
+
+2. Controller Area Network
+
+   Controller Area Network (CAN,CAN-bus) is a serial communication bus
+   that is used in automation and automotive industry. CAN allows
+   communications speeds up to 1 Mb/s and bus lengths over 1 km, however
+   maximum bit rate depends on bus length. The access method is
+   CSMA/CR. This access method guarantees that in case of collision the
+   frame with higher priority is not corrupted. The main advantage of
+   CAN is reliability and low cost of implementation. At present time
+   CAN is used in a wide variety of applications, ranging from cars and
+   trucks to process and building automation. CAN specifications
+   (ISO 11898, ISO 11519) describe only physical and link layers of well
+   known OSI model. Above CAN are used many different protocols that
+   define higher level protocols, however at present time there is no
+   open standard that would define how to use CAN to transfer datagrams
+   of the most important protocol of this decade - datagrams of
+   Internet Protocol.
+
+3. IP over CAN
+
+   To specify how to transfer IP datagrams over CAN it is necessary to
+   define:
+    - How to address devices on CAN (CAN nodes);
+    - Structure of CAN identifier;
+    - Distribution of Internet addresses among CAN nodes;
+    - Fragmentation of IP datagrams;
+    - Timing requirements (minimum and maximum delays).
+
+3.1 Addressing of CAN nodes
+
+   Number of nodes connected to one bus is physically limited by
+   properties of available CAN transceivers and the transceivers usually
+   allow less than 127 devices connected to one bus. CAN message
+   contains identifier field (11 bits or 29 bits long) which can be used
+   for addressing purposes. This identifier identifies content of
+   message and each particular node can use this identifier to
+   automatically ignore messages that are of no importance for that
+   particular node. It is obvious, that the header of IP datagram does
+   not fit into the CAN identifier. Also it seems to be useful to
+   include in the identifier both address of receiver and address of
+   sender.
+
+   For this reasons is seems adequate to use CAN according to
+   specification CAN 2.0B that uses 29 bit long identifier and to
+   differentiate devices on the same bus by eight bit "CAN-IP"
+   address. Number of nodes connected to one IP over CAN subnet is thus
+   limited to approx. 256 devices (some addresses are reserved). The
+   "CAN-IP" address corresponds to the least significant byte of IP
+   address. So a device with IP address of 147.229.14.45 would have
+   "CAN-IP"address of 45.
+
+3.1.1 Structure of CAN identifier in IP over CAN
+
+              27   24                                             0
+        +------+----+---------------------------------------------+
+        | PRIO | MG |                 MG Dependent                |
+        +------+----+---------------------------------------------+
+            |     |                    |
+            |     |                    +- Content depends on MG
+            |     +---------------------- Message Group (3 bits)
+            +---------------------------- Priority (2 bits)
+
+                Figure 1: Bit assignment in CAN identifier
+
+   Identifier of CAN message contains following fields:
+    - Priority (2 bits) - priority of a message;
+    - Message group (3 bits) - message group is used to interpret the
+      next 24 bits;
+    - Additional 24-bits - these bits depend on message group used.
+
+   Message group (MG) is used to distinguish among different message
+   groups. Each group consists of messages that are used for
+   a particular service. Placement of MG to the beginning of identifier
+   also allows to differentiate priority of message groups in a way that
+   minimizes risk of congestion of a bus. There are defined following
+   message groups:
+    - IP address assignment messages - these messages will be used
+      during assignment of IP addresses to nodes;
+    - DID Check message - Duplicate ID Check - test if specified
+      "CAN-IP" address is free to use in cases when C-DHCP server is
+      not responding;
+    - Fragmented IP datagram - these messages will be used for
+      transmission of IP datagrams when the node is fully configured and
+      in operational state.
+
+3.2 IP address assignment messages (C-DHCP)
+
+   These messages are distinguished by value 0 in MG field. Messages in
+   this group are used for assignment of IP address to a node connected
+   to CAN bus. It is required that all devices contain unique hardware
+   identifier (HWID). This HWID is assigned by manufacturer of that
+   particular device. Examples of such unique identifiers are MAC
+   address in Ethernet and Neuron ID in LonWorks networks. Length of
+   HWID is not specified here, this specification only limits the
+   maximum length of this identifier to 32 octets (32 bytes). IP address
+   assignment messages use following structure of CAN identifier:
+    - Priority (PRI - 2 bits) - priority of message;
+    - Message group (MG - 3 bits) - value is 0 ('000b');
+    - Message type (MT - 2 bits) - value depends on type of message;
+    - More IP addresses (MIP - 1 bit) - indicates whether primary or
+      additional IP is being assigned;
+    - More Fragments (MF - 1 bit) - indicates whether the receiver
+      should expect more fragments;
+    - Fragment Counter (FC - 4 bits) - contains fragment number;
+    - XDATA (XDATA1:XDATA2 - 16 bits) - data that take part in bus
+      arbitration.
+
+              27   24  23  22   20     16                         0
+        +------+----+---+---+----+------+------------+------------+
+        | PRIO | MG |MIP| MF| MT |  FC  |   XDATA1   |   XDATA2   |
+        +------+----+---+---+----+------+------------+------------+
+           |     |    |   |   |      |              \ /
+           |     |    |   |   |      |               +- Depends on MT
+           |     |    |   |   |      +-- Fragment Counter  (4 bits)
+           |     |    |   |   +--------- Message Type      (2 bits)
+           |     |    |   +------------- More Fragments    (1 bit)
+           |     |    +----------------- More IP addresses (1 bit)
+           |     +---------------------- Message Group     (3 bits)
+           +---------------------------- Priority          (2 bits)
+
+            Figure 2: IP address assignment message identifier
+
+   During the process of IP address assignment there are defined
+   following types of messages:
+    - Fragmented request and response for IP address assignment
+      arbitration;
+    - Message which assigns IP address to a device that "won" the
+      arbitration;
+    - Unfragmented message that forces a node(s) to request new IP
+      address.
+
+3.2.1 Request and response for an IP address assignment arbitration
+
+   Device that requests assignment of IP address sends CAN Remote Frame
+   with identifier filled with following values:
+     MG = 1h (001b)
+     MT = 0 (00b)
+     MIP = 0 or 1
+     MF = 0 or 1
+     FC = 0 .. 15
+     XDATA - contains fragmented HWID of node that sends the request.
+
+   Value of MIP is 0 if the device requests primary IP address. If the
+   device needs more than one IP address it should send request with the
+   MIP bit is set to 1 which indicates request for additional
+   (non-primary) IP address. Field XDATA is used to transfer fragments
+   of the unique HWID of device that requests the IP address. In the
+   first message (first fragment, FC = 0) the XDATA contains first
+   (least significant) and second byte of HWID, in the second message
+   (second fragment, FC = 1) the XDATA contains third and fourth byte of
+   HWID, etc. If there will be additional fragments the MF bit must be
+   set to 1. In the last fragment the MF bit has to be set to 0.
+   Fragment Counter (FC) is set to 0 in the first fragment and is
+   incremented by 1 in each consecutive fragment. This fragmentation
+   protocol is able to transmit HWID up to 32 bytes long.
+
+   After transmission of the fragment the sender has to wait for
+   response from a C-DHCP server for a maximum time of T1. The response
+   is Data Frame (with no data) that contains the same identifier as was
+   in the request. If the sender does not receive response until the
+   timeout period T1 expires, it should start the request procedure
+   again from the first fragment. After reception of a response from the
+   C-DHCP server the requesting device may send next fragment. After
+   reception of the response with last fragment (MF = 0) the requesting
+   device should wait for period of T2 for a message that assigns an IP
+   address. If the device does not receive a IP address assigning
+   message, it should start again the request for IP address.
+
+3.2.2 Message that assigns IP address
+
+   After reception of last fragment of request for an IP address the
+   C-DHCP server has to send both response to that request and a message
+   that assigns IP address. Message that assigns an IP address is based
+   on CAN Data Frame and may be fragmented if necessary (e.g. IP
+   version 6). The CAN identifier of message that assigns IP address is
+   filled by following values:
+     MG = 1 (001b)
+     MT = 1 (01b)
+     MIP = 0 or 1  - according to request
+     MF = 0 or 1   - according to FC
+     FC = 0 .. 15  - fragment counter used as above
+     XDATA1 = 255
+     XDATA2 = 255
+
+   The IP address is transmitted in the data field of Data Frame and is
+   transmitted MSB (Most Significant Byte) first.
+
+3.2.3 Message that forces reconfiguration of nodes
+
+   Message which forces reconfiguration of nodes is used to force the
+   addressed node(s) to request a new IP address. The message may be
+   addressed to either one or all devices (unicast or broadcast). In
+   case of unicast the addressed device must discard current IP address
+   (addressed one) and must apply for new IP address as a replacement of
+   the discarded one. In case of broadcast all connected devices must
+   discard all IP addresses and apply for new ones.
+
+   Message that forces reconfiguration of nodes is based on CAN Data
+   Frame and has following identifier:
+     MG = 1 (001b)
+     MT = 2 (10b)
+     MIP = 0
+     MF = 0
+     FC = 0 .. 15     - fragment counter used as above
+     XDATA1 = 255
+     XDATA2 = 0..255  - address of node that must reconfigure
+
+   If the XDATA2 = 255 then all devices on the bus must reconfigure.
+
+
+3.3 Fragmentation protocol of IP datagrams
+
+   The CAN bus was originally developed for use in automotive
+   communications. The automotive applications need to send small amount
+   of data very often. Thus the CAN is able transmit only up to 8 bytes
+   of data in one Data Frame. In order to transmit messages longer
+   then 8 bytes is necessary to use some kind of fragmentation. Proposed
+   fragmentation protocol is inspired by ISO 15765-2. ISO 15765-2
+   specifies transfer protocol between two devices which use
+   acknowledgement. This allows only point-to-point data transmision.
+   Because the IP protocol specifies possibility to broadcast data, it
+   is necessary to add some extensions to this fragmentation protocol.
+   The fragmentation protocol allows transmission of only one fragmented
+   IP datagram between two nodes in each direction at the same time.
+   This requirement prevents corruption of IP datagrams.
+
+3.3.1 Structure of message identifier
+   Fragmentation protocol uses Data Frames of CAN bus protocol only, no
+   Remote Frames are used. The message identifier of each frame is
+   divided into eight fields of different size.
+    - PRI (Priority - 2 bits) - defines priority group of the CAN
+      message;
+    - MG (Message group - 3 bits) - defines type of message group. IP
+      datagram messages belong to the group 7;
+    - R (Reserved - 2 bits) - reserved for future use. Both bits have
+      recessive value;
+    - MT (Message type - 2 bits) - specifies the type of fragmentation
+      protocol message;
+    - PARAM (Parameters - 4 bits) - specifies the parameters of current
+      fragmentation protocol message. The meaning di#ers according to
+      the specified Message Type;
+    - SOURCE (Source address - 8 bits) - this field contains address of
+      sending device. The value of the address is equal to the lowest
+      eight bits of IP address of source device;
+    - DESTINATION (Destination address - 8 bits) - this field contains
+      destination address. The value of the address is equal to the
+      lowest eight bits of IP address of destination device.
+
+              27   24  23  22   20     16                         0
+        +------+----+---+---+----+------+------------+------------+
+        | PRIO | MG | R | R | MT | Param|   Source   | Destination|
+        +------+----+---+---+----+------+------------+------------+
+           |     |    \   /   |      |         |        |
+           |     |     \ /    |      |         |        +- Destination
+           |     |      |     |      |         |           Address
+           |     |      |     |      |         +- Source address
+           |     |      |     |      +-- Message Parameters (4 bits)
+           |     |      |     +--------- Message Type       (2 bits)
+           |     |      +--------------- Reserved           (2x1 bit)
+           |     +---------------------- Message Group      (3 bits)
+           +---------------------------- Priority           (2 bits)
+
+             Figure 3: IP datagram fragment message identifier
+
+   There are defined three types of fragmentation protocol messages. Two
+   of them are used for data flow control, one for data transfer. The
+   message types are distinguished by value in MT field of CAN
+   identifier (see Tab. 1).
+
+                   Message Type    Meaning
+                  ------------------------------------------
+                        0          Reserved for future use
+                        1          First Frame (FF)
+                        2          Consecutive Frame (CF)
+                        3          Flow Control Frame (FC)
+
+               Table 1: Fragmentation protocol message types
+
+3.3.2 Message Type
+
+   First Frame - FF
+   Transfer of an IP datagram is started by this frame. It specifies the
+   total length of transferred data message.
+
+        CAN message identifier           CAN message data
+        +---+---+---------------+        +----+---------------+
+        |  MT   |     PARAM     |        | 0  |    1 .. 7     |
+        +---+---+---------------+        +----+---------------+
+        | 0 | 1 |      XDL      |        | DL |   reserved    |
+        +---+---+---------------+        +----+---------------+
+
+                     Figure 4: First Frame definition
+
+   - XDL (Extended Data Length - 4 bits) - specifies upper part of
+     segmented data message length.
+   - DL (Data Length - 1 byte) - the first byte of data part of CAN
+     message specifies the lower part of the segmented data message
+     length. So the total length is represented by 12 bits. It allows to
+     transfer data messages up to 4095 bytes long.
+   The remaining data bytes are reserved for future use.
+
+   Consecutive Frame - CF
+   All data of the segmented data message are transferred using
+   Consecutive Frames.
+
+        CAN message identifier           CAN message data
+        +---+---+---------------+        +--------------------+
+        |  MT   |     PARAM     |        |      0  ..  7      |
+        +---+---+---------------+        +--------------------+
+        | 1 | 0 |      SN       |        |     app. data      |
+        +---+---+---------------+        +--------------------+
+
+                  Figure 5: Consecutive Frame definition
+
+    - SN (Sequence Number - 4 bits) - the sequence number is used to
+      detect duplication or loss of Consecutive Frames. It's range is
+      zero to fifteen. The first CF sent after the First Frame has
+      Sequence Number initialized to one, each following CF has SN
+      incremented by one. Upon overflow the SN is initialized back to
+      zero.
+
+     All eight data bytes of CAN data frame should be used to transmit
+     application data.
+
+   Flow Control Frame - FC
+   In case of unicast (point-to-point) data transfers the Flow Control
+   is used to maintain the transmission. It informs the sender of the
+   status of the data transmission.
+
+        CAN message identifier           CAN message data
+        +---+---+---------------+        +----+----+----------+
+        |  MT   |     PARAM     |        | 0  | 1  | 2  ..  7 |
+        +---+---+---------------+        +----+----+----------+
+        | 1 | 1 |      FS       |        | BS | ST | reserved |
+        +---+---+---------------+        +----+----+----------+
+
+                  Figure 6: Flow Control Frame definition
+
+    - FS (Flow Status - 4 bits) - status of the current data
+      transmission. In the current proposal is defined only one value,
+      see Tab 2. The remaining values are reserved for future use.
+
+       Flow Status   Meaning
+      -----------------------------------------------------------
+           1         FC.CTS - Flow Control.Clear to send.
+                     This parameter value is sent to the
+                     sender to resume message transmission.
+      Other values   Reserved for future use
+
+                  Table 2: Flow Control frame status
+
+    - BS (Block Size - 1 byte) - value of Block Size defines how many
+      Consecutive Frames can be sent without immediate
+      FlowControl.ClearToSend message from receiving network entity.
+      The value is accepted only upon reception of the FC.CTS frame that
+      follows the First Frame. The Block Size parameter shall be within
+      the range of 0 to 255 (see Tab. 3).
+
+    - ST (Separation Time - 1 byte) - value of Separation time defines
+      the minimum time gap between the transmission od Consecutive
+      Frames. The time is specified by the receiver and kept by the
+      sender for a particular message transmission. The value is
+      accepted only upon reception of the FC.CTS frame that follows the
+      First Frame.
+
+          Block Size    Meaning
+         ----------------------------------------------------------
+             0          No further flow control shall be performed
+                        during the transmission of CF's. FC frame
+                        is sent only after FF.
+          1 .. 255      Flow control will be used accordingly.
+
+                  Table 3: Flow Control frame Block Size
+
+3.3.3 Transmission sequence
+
+   The transmission sequence differs according to the type of
+   transmission - broadcast or unicast. In case of unicast transmission
+   the whole flow control mechanism shall be used. In case of broadcast
+   transmission, no flow controll is possible.
+
+   Unicast transmission
+   If the destination address is other then 255 then the message is sent
+   as unicast message (see Fig. 7). The transmission is started by the
+   sender by sending the First Frame. The sender then waits for an
+   acknowledgement from receiver. The Flow Control Frame of type Clear
+   to Send contains parameters Block Size (BS) and Separation Time (ST).
+   After reception of FC.CTS, the sender starts sending data of
+   segmented data message using Consecutive Frames. After the number of
+   successive CF formerly specified by BS parameter the sender stops
+   transmission and waits for Flow Control frame. After reception of
+   FC.CTS, the sender sends next block of CF's, until the current
+   transmission is finished. The CF's in one block are sent with time
+   gap specified by the ST parameter set by receiver.
+
+                      sender                 receiver
+                       |   FF, data length = 40   |
+                       | -----------------------> |
+                       |                          |
+                       |           FC.CTS, BS = 3 |
+                       | <----------------------- |
+                       |   CF.SN = 1              |
+                       | -----------------------> |
+                       |   CF.SN = 2              |
+                       | -----------------------> |
+                       |   CF.SN = 3              |
+                       | -----------------------> |
+                       |                          |
+                       |           FC.CTS         |
+                       | <----------------------- |
+                       |   CF.SN = 4              |
+                       | -----------------------> |
+                       |   CF.SN = 5              |
+                       | -----------------------> |
+
+                 Figure 7: Unicast fragmentation protocol
+
+   Broadcast transmission
+   When the destination address equals 255, the message is sent as
+   broadcast message (see Fig. 8). In this case no flow control frames
+   are used. The transmission is introduced by the First Frame, which
+   specifies length of segmented data message. After that follows the
+   rest of data message in the form of Consecutive Frame. Each frame is
+   separated from the others by a time gap, which value is arbitrary for
+   each device so maximum time gap allowed must be used.
+
+                      sender                 receiver
+                       |   FF, data length = 40   |
+                       | -----------------------> |
+                       |   CF.SN = 1              |
+                       | -----------------------> |
+                       |   CF.SN = 2              |
+                       | -----------------------> |
+                       |   CF.SN = 3              |
+                       | -----------------------> |
+                       |   CF.SN = 4              |
+                       | -----------------------> |
+                       |   CF.SN = 5              |
+                       | -----------------------> |
+
+                Figure 8: Broadcast fragmentation protocol
+
+3.4 DID Check message
+
+   After reset of a device every device has to apply for appropriate
+   number of IP addresses. During normal operation these IP addresses
+   are assigned to all devices by a C-DHCP server. To assure trouble
+   free operation in case of C-DHCP server failure the device may use
+   the IP address it had before it was restarted (e.g. the IP address
+   was saved into EEPROM). However to use the former IP address the
+   device has to check if another device does not use identical
+   "CAN-IP" address by following procedure:
+
+     1. The device has to apply for an IP address assignment from the
+        C-DHCP server at least N times.
+     2. If there was no reply from the C-DHCP server the device has to
+        send DID Check message with "CAN-IP" address that it intends
+        to use.
+     3. The device has to wait for an DID Check response for period of
+        T4. If the device receives the DID Check response during the T4
+        the device is not allowed to use the tested address. If the
+        device receives during T4 DID Check message with same address as
+        it intends to use the device is not allowed to use the tested
+        address.
+     4. If the device has not received any DID Check response it has to
+        send the DID Check message again and again has to wait for a
+        response for T4. If the device receives the DID Check response
+        during the T4 the device is not allowed to use the tested
+        address. If the device receives during T4 DID Check message with
+        same address as it intends to use the device is not allowed to
+        use the tested address.
+     5. If the device did not recieve the DID Check response it may
+        switch to operational state and use the intended "CAN-IP"
+        address.
+
+
+   The DID Check message is based on CAN Remote Frame, structure of
+   identifier is in Fig. 9, the identifier fields are filled with
+   following values:
+     MG = 4 (100b)
+     DEST - contains "CAN-IP" address which is being tested
+
+              27   24           16            8            0
+        +------+----+------------+------------+------------+
+        | PRIO | MG |    0xFF    |    0xFF    | Destination|
+        +------+----+------------+------------+------------+
+           |     |                               |
+           |     |                               +-- CAN IP Address
+           |     |                                   under test
+           |     +---------------------- Message Group      (3 bits)
+           +---------------------------- Priority           (2 bits)
+
+                Figure 9: DID Check and Response identifier
+
+   The DID check response is based on CAN Data Frame, the CAN identifier
+   is same as in the DID Check message. During normal operation all
+   devices must "listen" for DID Check messages and DID Check
+   response. If any device receives DID Check message with its
+   "CAN-IP" address it must send DID Response as soon as possible and
+   not later than T5 after reception of DID Check message. If any device
+   receives DID Check response with its "CAN-IP" address it must cancel
+   all its operations and switch to a nonactive state.
+
+4. Conclusion
+
+   Specification of IP over CAN bus is still in development, some
+   refinements and extensions will follow. We expect that the work will
+   continue in following steps:
+
+   - Specification of properties of gateway between CAN bus and Ethernet
+     including C-DHCP description;
+   - Definition of required/recomended values and time constants of this
+     protocol;
+   - Implementation of IP over CAN protocol to a 8-bit microprocessor;
+   - Realization of the CAN to Ethernet gateway;
+   - Specification of requirements on bus topology and bus timing
+     according to the desired length and number of devices;
+
+   Please do not hesistate and send your commnets to the authors.
+
+5. References
+   [1] Robert Bosch GmbH, "CAN specification 2.0", 1991,
+       can be downloaded from:
+       http://www.bosch.de/de_e/productworld/k/products/prod/can/docu/
+       can2spec.pdf
+   [2] Postel, J., "Internet Protocol", RFC 791, STD 5, September 1981
+   [3] Deering, S.Postel, and Hinden, R., "Internet Protocol, Version
+       (IPv6) specification", RFC 2460, December 1998
+
+6. Authors addresses
+
+   Petr Cach                             Petr Fiedler
+   UAMT FEI                              UAMT FEI
+   Brno University of Technology         Brno University of Technology
+   Bozetechova 2                         Bozetechova 2
+   612 66 Brno                           612 66 Brno
+   Czech Republic                        Czech Republic
+
+   Fax: +420 5 41141123                  Fax: +420 5 41141123
+   E-mail: cach@dame.fee.vutbr.cz        E-mail: fiedlerp.fee.vutbr.cz
+
+
+6.  Full copyright statement
+
+   Copyright (C) The Internet Society (2000).  All Rights Reserved.
+
+   This document and translations of it may be copied and furnished
+   to others, and derivative works that comment on or otherwise
+   explain it or assist in its implementation may be prepared, copied,
+   published and distributed, in whole or in part, without
+   restriction of any kind, provided that the above copyright notice
+   and this paragraph are included on all such copies and derivative
+   works.  However, this document itself may not be modified in any
+   way, such as by removing the copyright notice or references to the
+   Internet Society or other Internet organizations, except as needed
+   for the purpose of developing Internet standards in which case the
+   procedures for copyrights defined in the Internet Standards
+   process must be followed, or as required to translate it into
+   languages other than English.
+
+   The limited permissions granted above are perpetual and will not
+   be revoked by the Internet Society or its successors or assigns.
+
+   This document and the information contained herein is provided on
+   an "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+
+   This document expires September 2001.
