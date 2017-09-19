@@ -1,3 +1,30 @@
+# SOME/IP
+
+(Scalable Service-Oriented MiddlewarE over IP)
+
+[Vector](https://elearning.vector.com/index.php?wbt_ls_kapitel_id=1588443&root=378422&seite=vl_automotive_ethernet_introduction_en)
+[Autosar]()
+[some-ip.com](http://some-ip.com/papers.shtml)
+
+From Vector 18.09.2017
+
+
+A new philosophy for data transmission is finding its way into the motor vehicle with SOME/IP (Scalable service-Oriented MiddlewarE over IP). While signal-oriented data transmission is used on classic bus systems (CAN, LIN, FlexRay), SOME/IP allows the introduction of service-oriented transmission of information. However, it must be noted that SOME/IP is not limited to a description of the communication. Rather, it is a middleware that affects the software components of an ECU. For this reason, there is a separate software path in AUTOSAR that allows a connection down to the application.
+
+With signal-oriented data transmission information is sent when the sender sees a need, such as when values are updated or changed, independent of whether these data are currently needed by a receiver in the network. Service-oriented data transmission is different. A sender only sends data when at least one receiver in the network needs this data. The advantage of this procedure is that the network and all connected nodes are not loaded by unnecessary data. Service-oriented data transmission thus requires that a server is informed in one way or another about which receivers are waiting for its data.
+
+A client has the option of subscribing to the content of a service on the server. If an event occurs, it receives the updated data from the server. The SOME/IP Service Discovery (SOME/IP-SD) is used for subscribing to content. A client that wants to subscribe to content on the server sends a Subscribe Eventgroup to the server. If it is possible to subscribe to content, the server responds by sending a positive acknowledgment back to the client. The subscription is now active. If content is not available, the server can decline the subscription by sending a negative acknowledgment.
+
+Multiple clients can subscribe to content of a service simultaneously. The method used to send available data to clients depends on whether the content of a service is made available via UDP or TCP. With UDP, when an event occurs the server can send data to all clients with an active subscription via Unicast, Multicast, or Broadcast. If the content is made available via TCP, a connection to the server must be established by each client, which enables the respective sending of the data.
+
+The contents that are sent by the server, based on an active subscription, can exist in two formats: as an Event Notification and as a Field Notification. Both formats share the common characteristic that their generation is event-driven. The Event Notification corresponds to a form whose fields are filled with properties that represent a snapshot without having any relation to earlier events. The Field Notification, on the other hand, contains values that are related to earlier contents and therefore have a history. For this reason, a field can be expanded to include getter and setter methods that enable reading and writing of the desired contents by a client. A client can thus access contents of the server with read-only or read/write access even without a subscription.
+
+Another data exchange option exists in that information can be made available by the call of a method. A client performs a so-called remote procedure call (RPC), which triggers the start of a function on the contacted server. The function is called using a request that the client sends over the network. This request of the client can also contain data that are transferred to the calling method as parameters. After the function is executed on the server, a return value can be output that is sent by the server to the client using a response. The fact that the client called the function implies that the client wants to make use of the resulting data. But it is also possible that the client calls a method on the server that has no return value. In this case, the process is already complete on the part of the client when the method is actually called.
+
+So that a client knows which services are currently available, SOME/IP-SD provides two mechanisms that allow the dynamic discovery of services. An Offer Service enables the server to provide the network with all its offered services. The Find Service allows clients to request available services instead.
+
+
+
 uni-directional RPC communication
 bi-directial RPC communication
 field communication
