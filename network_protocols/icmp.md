@@ -17,6 +17,33 @@ The ICMP is a supporting protocol in the internet protocol, used to send error m
 and operational information.
 
 
+## Summary:
+
+Summary of Message Types
+
+    0  Echo Reply
+
+    3  Destination Unreachable
+
+    4  Source Quench
+
+    5  Redirect
+
+    8  Echo
+
+   11  Time Exceeded
+
+   12  Parameter Problem
+
+   13  Timestamp
+
+   14  Timestamp Reply
+
+   15  Information Request
+
+   16  Information Reply
+
+
 ### Datagram structure:
 
     0                   1                   2                   3
@@ -69,6 +96,13 @@ and operational information.
       The internet header plus the first 64 bits of the original
 
 ### Control messages
+
+#### Echo or Echo reply
+
+      The address of the source in an echo message will be the
+      destination of the echo reply message.  To form an echo reply
+      message, the source and destination addresses are simply reversed,
+      the type code changed to 0, and the checksum recomputed.
 
 #### Source Quench (Deprecated)
  - Type: 4
