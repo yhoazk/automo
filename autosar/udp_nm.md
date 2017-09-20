@@ -2,6 +2,7 @@
 - - -
 #### Links
 [automotive wiki](https://automotive.wiki/index.php/UDP_Network_Management)
+[Autosar Doc](https://www.autosar.org/fileadmin/files/standards/classic/4-3/software-architecture/communication-stack/standard/AUTOSAR_SWS_UDPNetworkManagement.pdf)
 
 ##### The UDP Network Management is a basic software module of the communications service.
 
@@ -11,8 +12,7 @@ stack, independent of the PHY layer of the communication system used.
 It's in charge of the coordination of the transition between normal operation
 and bus-sleep mode of an ETH network.
 * Periodic broadcast messages are sent by nodes which want to keep the NM-cluster
-awake
-* No master node
+awake * No master node
 * Other features:
   - Node detection(detect all presetn nodes in a network)
   - Ready sleep detection (detect if all the nodes on the network are ready to sleep)
