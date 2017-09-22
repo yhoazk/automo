@@ -28,6 +28,7 @@ Debugging is the development activity that finds, analyzes and removes the cause
 4. Defect clustering
 
 5. Pesticide paradox:
+
 if the same set of test are ran, eventtually this test will not be reliable any longer.
 They wont reveal new/different issues.
 6. Testing is context dependent:
