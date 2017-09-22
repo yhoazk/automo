@@ -26,10 +26,14 @@ Debugging is the development activity that finds, analyzes and removes the cause
 2. Exhaustive testing is imposible (except for trivial cases)
 3. Early testing
 4. Defect clustering
-	
-5. Pesticide paradox
-6. Testing is context dependent
-7. Absence of errors fallacy
+
+5. Pesticide paradox:
+if the same set of test are ran, eventtually this test will not be reliable any longer.
+They wont reveal new/different issues.
+6. Testing is context dependent:
+
+7. Absence of errors fallacy:
+
 
 ### Mention the five fundamental test activities and its respective tasks from planning to closure
 
