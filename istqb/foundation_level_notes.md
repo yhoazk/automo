@@ -26,7 +26,7 @@ Debugging is the development activity that finds, analyzes and removes the cause
 2. Exhaustive testing is imposible (except for trivial cases)
 3. Early testing
 4. Defect clustering
-	
+
 5. Pesticide paradox
 6. Testing is context dependent
 7. Absence of errors fallacy
@@ -35,3 +35,7 @@ Debugging is the development activity that finds, analyzes and removes the cause
 
 ### What are the psychological factors that influence the success of testing
 ### What are the differences in the developer and tester midset?
+
+
+
+test change
