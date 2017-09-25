@@ -35,7 +35,3 @@ Debugging is the development activity that finds, analyzes and removes the cause
 
 ### What are the psychological factors that influence the success of testing
 ### What are the differences in the developer and tester midset?
-
-
-
-test change
