@@ -2,7 +2,7 @@
 
 ### Root cause vs effect of a defect:
 
-### Explain the terms:
+### Explain the terms:s
 
 #### Error
 #### Defect
