@@ -39,6 +39,7 @@ field allows to detect the encoding being used.
 
 RPC : Remote procedure call
 
+![](someip_msg.png)
 
 Fields for the SOME/IP message:
  * Message ID [32 bit]
@@ -61,6 +62,7 @@ The request ID shall be unique for a provider-suscriber combination.
   to arrive anymore.
 
 The Request ID is constructed in the following way:
+
 | client ID | Session ID |
 | :------------- | :------------- |
 | 16 bits | 16 bits |
@@ -329,6 +331,9 @@ The error messages are not answered, in any case ie:
 - fire & forget
 
 ### SOME/IP - SD (Service discovery)
+
+![](someip-sd_msg.png )
+
 
 * SD messages are always transmitted from port 30490 to port 30490 using UDP.
 * An SD implementation is expeted to keep track of own service instances and
