@@ -1,6 +1,6 @@
 # [ICMP Internet control Message Protocol](https://tools.ietf.org/html/rfc792)
 
-This is used as a support mechanism by network devices, includign routers, to send error messages and 
+This is used as a support mechanism by network devices, includign routers, to send error messages and
 operational information.
 
 For example to indicate:
@@ -31,30 +31,30 @@ Summary of Message Types
 
     8  Echo
 
-   11  Time Exceeded
+    11  Time Exceeded
 
-   12  Parameter Problem
+    12  Parameter Problem
 
-   13  Timestamp
+    13  Timestamp
 
-   14  Timestamp Reply
+    14  Timestamp Reply
 
-   15  Information Request
+    15  Information Request
 
-   16  Information Reply
+    16  Information Reply
 
 
 ### Datagram structure:
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |     Type      |     Code      |          Checksum             |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                             unused                            |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |      Internet Header + 64 bits of Original Data Datagram      |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |     Type      |     Code      |          Checksum             |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                             unused                            |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |      Internet Header + 64 bits of Original Data Datagram      |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
 
@@ -111,7 +111,7 @@ Request that teh sender decrease the rate of messages sent to a router host.
 
 #### Redirect
  - Type: 5
- - Code: 
+ - Code:
  	- 0: redirect for network
 	- 1: Redirect for host
 	- 2: Redirect for type of service and network
@@ -121,7 +121,7 @@ Request that teh sender decrease the rate of messages sent to a router host.
 The TTL (time to live) field reached zero or a host failed to reassemble a fragmented datagram within the expected time.
 
 #### Timestamp and Timestamp reply
-Message used for sync 
+Message used for sync
 
 #### Address mask request
 Sent ba a host to a router in order t obtain the appropiate subnet mask.
