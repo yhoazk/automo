@@ -88,7 +88,7 @@ QUE ES un I-PDU?!?
 #### Control Bit Vector
 
 | _  | Bit 7 |  Bit 6 |  Bit 5 |  Bit 4 |  Bit 3 |  Bit 2 |  Bit 1 |  Bit 0 |
-| :------------- | :------------- |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
 | CBV       | Res       | PNI bit | Res | Active wakeup bit | NM coordination sleep ready | res | res | Repeat message request |
 
 * Repeat message request:
