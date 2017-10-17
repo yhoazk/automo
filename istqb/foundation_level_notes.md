@@ -35,3 +35,10 @@ Debugging is the development activity that finds, analyzes and removes the cause
 
 ### What are the psychological factors that influence the success of testing
 ### What are the differences in the developer and tester midset?
+
+
+
+### [Connascence](https://en.wikipedia.org/wiki/Connascence_(computer_programming))
+
+In software programming, two components are connascent if a change in one would require the other to be modified in
+order to maintain the overall correctness of the system.
