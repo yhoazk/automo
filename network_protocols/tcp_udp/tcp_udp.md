@@ -19,6 +19,13 @@ A 3-way handshake is needed.
 
 Because TCP always requires an explicit connection between two nodes, the sending of Broadcast or Multicast messages to the network without a specific receiver is not possible.
 
+![http://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml](3_way_handshake.gif)
+
+## [Sequence-acknowledgment-numbers](http://packetlife.net/blog/2010/jun/7/understanding-tcp-sequence-acknowledgment-numbers/)
+
+
+- - -
+
 
 ## UDP
 This protocol is a connectionless transmission. (open loop)
