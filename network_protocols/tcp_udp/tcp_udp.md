@@ -1,5 +1,6 @@
 # TCP and UDP
 [src vector](https://elearning.vector.com/vl_automotive_ethernet_introduction_en.html)
+[IEFT](https://tools.ietf.org/html/rfc793)
 - This two protocols are layer-4.
 - Both protocols divide the data that is to be transmitted into smaller parts.
 - This divide-up data is called segments in TCP and datagrams in UDP.
@@ -21,7 +22,9 @@ Because TCP always requires an explicit connection between two nodes, the sendin
 
 ![http://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml](3_way_handshake.gif)
 
-## [Sequence-acknowledgment-numbers](http://packetlife.net/blog/2010/jun/7/understanding-tcp-sequence-acknowledgment-numbers/)
+
+
+
 
 
 - - -
