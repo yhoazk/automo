@@ -37,16 +37,16 @@ as long as NM packets from the other nodes are received, it postpones transition
 to the bus-sleep mode.
 
 If a dedicated timer elapses because no NM pkgs are received anymore, every node
-initialtes transition to bus-sleep mode.
+initiates transition to bus-sleep mode.
 
 
 ## UdpNm AUTOSAR Module
 
 
-The UdpNm modle provides an adaptation between Network Management interface `NM`
+The UdpNm node provides an adaptation between Network Management interface `NM`
 and a TCP/IP stack (TCP/IP).
 
-UdpNm is directly related with partial networking, there's a bit in the NM messages
+UdpNm is directly related with partial networking, there's a bit(0/1) in the NM message
 which specifies in which state the network shall continue. The bit is named `PNI`
 
 The `PNI` is a field which contains information of the partial network, the range
