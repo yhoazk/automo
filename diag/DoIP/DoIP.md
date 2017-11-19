@@ -1,0 +1,1 @@
+# [DoIP: Diagnostics over IP](https://www.mentor.com/products/electrical-design-software/multimedia/overview/doip-and-advanced-diagnostics-using-ethernet-in-the-vehicle-aa7f4020-8e33-4c3f-9975-22e345ca91cc)
