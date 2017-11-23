@@ -29,8 +29,9 @@ No wake-up based on NM Messages possible:
 #### Coordination algorithm
 
 The UdpNm coordination algorithm is based on periodic NM packets, which are received
-by all nodes in the cluster via broadcast Tx. Reception of NM pkgs indicates that
-the sending node wants to keep the NM-cluster awake.
+by **all** nodes in the cluster via **broadcast** Tx.
+Reception of NM pkgs indicates that the sending node wants to keep the NM-cluster
+awake.
 
 If any node is ready to go to the bus-sleep mode, it stops sending NM pkgs, but
 as long as NM packets from the other nodes are received, it postpones transition
