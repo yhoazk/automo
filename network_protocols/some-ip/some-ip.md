@@ -203,14 +203,14 @@ If the elemenents of a fixed size array are more than the specified by the lengt
 field, the extra elements must be skipped, if they are less the serialization must
  be aborted.
 
-![](,/SOME-IP-fixarray.PNG)
+![](./SOME-IP-fixarray.PNG)
 
 
 #### Arrays (dynamic length)
 The length of the array is specified by the length field, which is part of the
 message, and it does not forms part of the length count.
 
-![](,/SOME-IP-dynarray.PNG)
+![](./SOME-IP-dynarray.PNG)
 
 #### Enumeration
 
@@ -252,10 +252,10 @@ The client-server shall use a single TCP connection for all methods, events and
 notifications for a service instance. When having more than one instance of a
 service s TCP connection per service instance is needed.
 
-The client ins responsible of open and reestrablish tje TCP connectio whenever it
+- The client is responsible of open and reestablish the TCP connection whenever it
 fails.
-The client is also responsible to close the connection.
-The server shall not close the connection.
+- The client is also responsible to close the connection.
+- The server shall not close the connection.
 
 
 #### Request/Response communication
@@ -323,7 +323,7 @@ SOME/IP supports two mechanisms:
 ##### Return Code
 
 The return code shall be a UINT8
-![](,/SOME-IP-returncodes.PNG)
+![](./SOME-IP-returncodes.PNG)
 
 
 The error messages are not answered, in any case ie:
@@ -332,11 +332,11 @@ The error messages are not answered, in any case ie:
 
 ### SOME/IP - SD (Service discovery)
 
-![](someip-sd_msg.png )
+![](./someip-sd_msg.png )
 
 
 * SD messages are always transmitted from port 30490 to port 30490 using UDP.
-* An SD implementation is expeted to keep track of own service instances and
+* An SD implementation is expected to keep track of own service instances and
 service instance it needs from others.
 * SD can be Unicast or multicast.
 * It's expected to be self-repairing.
@@ -346,11 +346,10 @@ service instance it needs from others.
 * Service discovery always uses Method-id: 0x8100
 * Client-ID is always set to 0, since only one SOME/IP-SD instane exists.
 * The message type is always 0x02 (notification)
-
-* A client is not allowed to send a finsService to ask for other service instances
+* A client is not allowed to send a findService to ask for other service instances
 still active, but to wait for a proper offer to arrive.
 
-** SOME/IP-SD == SOME/IP service discovery **
+** SOME/IP-SD == SOME/IP service discovery **<br>
 This service discovery is used to:
 - Find services
 - Test if an instance of a service is running
@@ -359,7 +358,7 @@ This service discovery is used to:
 #### Entries
 There are two types of entries:
 1. Service entry
-![](,/SOME-IP-serviceentry.PNG)
+![](./SOME-IP-serviceentry.PNG)
 
 Type:
   1. `0x00` Find service
@@ -379,7 +378,7 @@ Minor version: The minor version of the service.
 
 2. eventgroup entry
 
-![](,/SOME-IP-eventgroupeentry.PNG)
+![](./SOME-IP-eventgroupeentry.PNG)
 
 Type:
 1. `0x04` find Eventgroup
