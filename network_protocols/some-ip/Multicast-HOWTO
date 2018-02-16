@@ -296,7 +296,7 @@
 
   A list of TTL thresholds and their associated scope follows:
 
-
+```
   ______________________________________________________________________
   TTL     Scope
   ----------------------------------------------------------------------
@@ -308,7 +308,7 @@
   <255    Unrestricted in scope. Global.
   ______________________________________________________________________
 
-
+```
 
   Nobody knows what "site" or "region" mean exactly. It is up to the
   administrators to decide what this limits apply to.
@@ -1669,6 +1669,3 @@
   I'm sure I'm forgetting someone here... Sorry. I'm certain they know
   I'm grateful to them too, so if they tell me, everybody will know
   it... :-)
-
-
-
