@@ -33,3 +33,13 @@ decimal is 0x10. For the las octet, 1 is 1 in all the representations, then 0x01
 
 
 - The multicast messages must use  UDP protocol, even when in the GENIVI
+
+Also a redirection must be used:
+
+To use IP multicast, the route must be added. In Linux this can be done
+by:
+```
+$ route add -net 224.0.0.0/4 dev eth0
+```
+[src](https://github.com/GENIVI/vsomeip/blob/master/documentation/multicast.txt)<br><br>
+Other OSes may have different ways to do this.
