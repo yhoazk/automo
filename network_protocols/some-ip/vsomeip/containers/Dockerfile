@@ -4,10 +4,13 @@ RUN dnf update -y
 RUN dnf install -y gcc net-tools tcpdump vim
 
 # Expose a 4 ports for Someip
-EXPOSE 5555 5554 5553 5552
+EXPOSE 5555:5560/tcp
+EXPOSE 5550:5554/udp
 
 # Getting the src code in the container
-VOLUME ["/vsompeip"]
+VOLUME ["/vsomeip"]
 
-
-ENTRYPOINT ["someip_setup.sh"]
+ADD ["./someip_setup.sh", "/"]
+CMD ["ls", "/vsomeip"]# /someip_setup.sh"]
+CMD ["ls", "/"]
+ENTRYPOINT ["bash", "/someip_setup.sh"]
