@@ -62,6 +62,53 @@ size of the container.
 The concept is similar to the `.gitignore` file, in the `.dockerignore` just add
 the files that are not relevant to the build
 
+## Expose tcp and udp ports of the container:
+By default the exposed ports are TCP. <br>
+Runing the container:
+```
+docker run -p 5555:5560[/tcp] -p 5550:5554/udp
+```
+In the `Dockerfile`
+```
+EXPOSE 5555:5560/tcp
+EXPOSE 5550:5554/udp
+```
+
+## Permission denied to a volume:
+
+One way to get rid of this issue is to temporarily disable selinux:
+```
+su -c "setenforce 0"
+```
+
+Also is possible to add a rule to selinux:
+```
+chcon -Rt  svirt_sandbox_file_t /path/to/volume
+```
+
+The correct solution (for docker >1.7) is to add the flag `v` to the container
+when issuing the `run` command:
+
+```
+docker run -it --rm -v "$PWD/../vsomeip-master":/vsomeip:z someip/clean bash
+```
+
+That flag will automatically add the selinux rule described before.
+
+
+
+## [`RUN` vs `CMD` vs `ENTRYPOINT`](https://aboullaite.me/dockerfile-run-vs-cmd-vs-entrypoint/)
+
+* `RUN`
+  - Executes the given command in a new layer and **creates a new image**. Mainly
+  used for installing a new package
+* `CMD`
+  - Default command to be run by the entrypoint. It sets the default command
+  and/or parameters, however, we can overwrite those commands or pass in and
+  bypass the default parameters from the command line when docker runs.
+* `ENTRYPOINT`
+  - The program to run the given command. It's used when the container will be
+  used as an executable.
 
 ### Jargon:
 
