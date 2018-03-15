@@ -6,6 +6,8 @@
 [Autosar]()
 [some-ip.com](http://some-ip.com/papers.shtml)
 
+[C++ API Manual](https://docs.projects.genivi.org/ipc.common-api-tools/3.1.3/pdf/CommonAPICppUserGuide.pdf)
+
 From Vector 18.09.2017
 
 
