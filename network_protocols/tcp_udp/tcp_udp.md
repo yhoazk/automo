@@ -25,6 +25,27 @@ Because TCP always requires an explicit connection between two nodes, the sendin
 
 
 
+### TCP connection stablishment
+
+The server binds and opens a port, this is called a passive open. Then the
+client is able to send an active open.
+
+To establish the connection the 3-way handshake occurs.
+`SYC, SYNC-ACK, ACK`
+
+```
+# Linux listen to a port:
+nc -l <port>
+
+# Listen TCP
+sudo tcpdump -i <iface> 
+```
+
+### Windows sequence number:
+
+Its a 32bit number that counts the sequence of hte TCP packets.
+
+
 
 
 - - -

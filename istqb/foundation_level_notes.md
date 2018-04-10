@@ -42,3 +42,48 @@ Debugging is the development activity that finds, analyzes and removes the cause
 
 In software programming, two components are connascent if a change in one would require the other to be modified in
 order to maintain the overall correctness of the system.
+
+
+
+### Static tests
+
+AKA code review.
+
+**What finds a static analysis?**:
+
+- Cyclomatic complexity
+- security issues
+- syntax violations (Jdog)
+
+Two types:
+
+- Formal: Walkthrough review.
+  - Manager "do it"
+  - moderator
+  - author
+  - reviewer
+  - scriber: Makes logs
+
+The Walkthrough is lead by the author shows results, explains the code.
+
+The technical review:
+- moderator is certified or trained
+- The main purpose id to discuss and find problems
+
+Inspection:
+- purpose: find problems / defects
+- Needs a trained moderator
+- process improvement
+
+- Informal: purpose?
+
+
+Law of dimishing returns: The gain from additions decays asymptotically.
+
+
+
+Healty requirements are:
+* clear
+* reviewed
+* compact
+* prioritized
