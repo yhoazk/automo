@@ -75,6 +75,24 @@ Inspection:
 - Needs a trained moderator
 - process improvement
 
+
+Specification of test techniques:
+- Boundary values
+- Equivalence classes
+- Decision tables
+- State transitions
+- Use case testing
+- Equivalence partitioning
+
+Test levels:
+- component
+- integration
+- system
+- acceptance <- use case.
+
+
+Structural test == white box test
+
 - Informal: purpose?
 
 
