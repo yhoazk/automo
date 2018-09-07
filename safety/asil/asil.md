@@ -16,16 +16,14 @@ The lowest integrity level.
 This level dictates the highest integrity requirements on the product.
 A failure in a ASIL D system represents likely potential for severely life
 threatening or fatal injury in the event of malfunction.
+
 ## QM
 This level represents application with no automotive hazards and therefore no
 safety requirements.
 
-
-
 - ASIL level has impact on HW, SW and supporting process
 - A hardware element can be designed to satisfy up to ASIL
 - An ASIL level
-
 
 ### ASIL decomposition:
 ASIL decomposition is a process to fragment the system in sub-systems and then
@@ -43,8 +41,8 @@ Hardware level ASIL decomposition involves deep knowledge of the characteristics
 of the available hardware, so that independence, functionality, and cost are all
 correctly balanced.
 
-
 ### Alternative decomposition
+
 When only some functions are ASIL D, but there are other functions which are not
 safety related in the same system.
 
