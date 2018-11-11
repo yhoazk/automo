@@ -7,7 +7,6 @@ services. It specifies generic services which allow the diagnostic tester to
 stop or to resume non-diagnostic message transmisison on the data link.
 
 
-
 ## Terms and defiinitons
 
 * **DTC: diagnostic trouble code**
