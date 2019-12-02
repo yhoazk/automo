@@ -504,10 +504,18 @@ The next messages are sent only using Unicast:
 
 Startup consists of 3 phases:
 
-1. Initial wait phase:
-  1. When the ECU starts, then the Initial wait phase begins.
-  2. The ECU starts an initial delay, then the offer and find entries are sent.
-2. Repetition phase:
-  1. ...
-3. Main Phase:
-  1.
+
+Initial Wait Phase<sup>[1](https://www.autosar.org/fileadmin/user_upload/standards/foundation/1-2/AUTOSAR_PRS_SOMEIPServiceDiscoveryProtocol.pdf)</sup>:
+ 
+- When the ECU starts, then the Initial wait phase begins.
+- Wait for random_delay in `Range(INITIAL_DELAY_MIN, _MAX)`
+- Send message (Find Service and Offer Service entries)
+Repetition Phase (REPETITIONS_BASE_DELAY=100ms, REPETITIONS_MAX=2):
+  - Wait `2^0 ∗ 100ms`
+  - Send message (Find Service and Offer Service entries)
+  - Wait `2^1 ∗ 100ms`
+  - Send message (Find Service and Offer Service entries)
+Main Phase (as long message is active and CYCLIC_OFFER_DELAY is defined):
+- Wait CYCLIC_OFFER_DELAY, normally 1s
+- Send message (Offer Service entries)
+
