@@ -1,4 +1,4 @@
-# Precision Time Protocol
+# Precision Time Protocol (IEEE 1588)
 
 The Precision time protocol is used to keep the computer and other devices'
 clocks synchronized and accurate. The PTP is capable of submicrosecond accuracy
@@ -75,6 +75,22 @@ PTP supports two multicast destination addresses:
     - An 802.1Q VLAN bridge would __forward__ the frame unchanged
 - `01:80:c2:00:00:0e`: Individual LAN scope group address
     - An 802.1Q VLAN bridge wound __drop__ the frame
+
+## Clock types
+
+#### Master clock
+
+#### Slave clock
+
+#### Transparent clock
+
+#### Boundary clock
+
+#### Grandmaster clock
+
+#### Ordinary clock
+
+
 
 ### Transparent clock
 
