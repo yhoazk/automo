@@ -10,8 +10,28 @@ Behaves like a network switch forwarding packages between interfaces that are
 connected to it. It supports STP, VLAN filter and multicast snooping. Use a
 bridge when establishing channels between VMs, containers and the hosts.
 
+Old alternative
 ```sh
+brctl addbr br0
+brctl addif br0 eth0
+brctl addif br0 eth1
+ifconfig br0 up
 ```
+
+Newer tools
+(confirm this)
+```sh
+ip link add link br0 type bridge
+ip link set eth0 master br0
+ip link set eth1 master br0
+ip link set br0 up
+```
+
+linux bridges by default do not forward the frames from the PTP protocol which
+use the multicast address `01-80-C2-00-00-0E` which is individual LAN scope but
+will forward the general purpose address `01-1B-19-00-00-00`. However this will
+is not PTP compliant and the timestamp is no longer valid or at least the
+expected precision will not be reached.
 
 ## Bonded Interface
 

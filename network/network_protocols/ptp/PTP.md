@@ -5,6 +5,17 @@ clocks synchronized and accurate. The PTP is capable of submicrosecond accuracy
 which improves the accuracy given by Network Time Protocol (NTP).
 PTP is divided between kernal and user land.
 
+The standard IEEE 1588 specifies an ethernet type for this protocol
+encapsulation: `0x88f7`. This means that the ether type in the ethernet
+protocol will be `0x88f7`.
+
+
+To capture the PTP messages in a linux client use the next comand:
+
+```
+tcpdump -i <ether_ifae> ether proto 0x88f7 
+```
+
 ## Introduction to PTP
 
 The clocks managed by PTP follow a master-slave hierarchy. The slaves are synch
@@ -57,6 +68,46 @@ Go to the real dir:
 cd `realpath /sys/class/net/eth0`
 
 ```
+
+
+PTP supports two multicast destination addresses:
+- `01:1b:19:00:00:00`: General group address
+    - An 802.1Q VLAN bridge would __forward__ the frame unchanged
+- `01:80:c2:00:00:0e`: Individual LAN scope group address
+    - An 802.1Q VLAN bridge wound __drop__ the frame
+
+### Transparent clock
+
+### Boundary clock
+
+
+### End-to-end
+
+This mechanism uses a message exchange (delay,request,response) method between slave and master.
+The slave sends a delay request message to the master, which responds with a delay response message
+back to the requesting slave. The propagation path between the two endpoints might not be PTP-aware
+switches/hubs/routers etc
+
+
+### Peer-to-peer
+
+This mechanisms uses a port-base peer delay message. Each port on a PTP devies sends peer delay request messages to the port it is directly connected to. The connected port then responds with a peer delay response message. The reuqesting port finally stores the propagation delay measured between the 2 ports. All ports in a PTP aware metwork must use the same delay mechanism. This implies taht only complete PTP aware networks must use the same delay mechanism. Furthermore, P§P is often mentioned when the capability of a PTP transparent clock devide is specified since such devices are required in a switched / routed network using P2P mechanism.
+
+The final calculation of the propagation delay between master and slave is done by each transparent clokc by adding the receiving port peer delay and the residence time of the packet in the device to the correction field of the PTP event message, for instance a synchronization message. In this way sudden changes in the propagation path have a very small impact on the synchronization of slaves.
+
+
+### **End-to-End** vs **Peer-to-Peer**
+[src](https://blog.meinbergglobal.com/2013/09/19/end-end-versus-peer-peer/)
+
+
+This two are two types of propagation delay measurement mechanisms used in 
+IEEE 1588.
+Peer-to-peer should be preferred, but every node in the network needs to be
+1588 capable, i.e. they are either transparent or boundary clocks. Otherwise
+end-to-end should be used.
+
+
+
 
 [src](https://doc.opensuse.org/documentation/leap/tuning/html/book.sle.tuning/cha.tuning.ptp.html)
 [hw support](http://linuxptp.sourceforge.net/)
