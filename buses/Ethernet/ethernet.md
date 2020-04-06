@@ -1,0 +1,5 @@
+# Ethernet
+
+## Is ethernet deterministic?
+
+

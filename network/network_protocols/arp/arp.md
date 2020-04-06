@@ -123,3 +123,14 @@ Internetwork address of the intended receiver.
 
 
 ![](arp_diag.png)
+
+
+### ARP unicast
+
+__Does it make sense to send a unicast ARP?__
+
+Normally ARP are used to find the MAC of a given IP, that means that it's sent as a broadcast within the
+boundaries of the network. This means that ARP pkgs are not routed across interconnections.
+
+However there is a valid case for a unicast ARP which is described in [RFC 1122](http://tools.ietf.org/html/rfc1122) § 2.3.2.1.
+Which is to validate an entry on the ARP table. 
