@@ -1,6 +1,6 @@
 # [ICMP Internet control Message Protocol](https://tools.ietf.org/html/rfc792)
 
-This is used as a support mechanism by network devices, includign routers, to send error messages and
+This is used as a support mechanism by network devices, including routers, to send error messages and
 operational information.
 
 For example to indicate:
@@ -8,6 +8,11 @@ For example to indicate:
 - Host could not be reached.
 
 It's not used to exchange date between systems, nor it's employed by end-user network applications.
+
+The most known use of ICMP is by using the tool `ping`, this tool uses ICMP type 8, which is an
+echo requests. However ICMP messages are also used by higher layer protocols like TCP and UDP when
+the intended port was not reacheable; in that case an ICMP is send to the target address with type
+3.
 
 **ICMP errors are directed to the source IP address of the originating packet**
 

@@ -5,10 +5,10 @@
 In the case of IPv4 ARP maps network addresses to a physical address.
 Translate layer 3 and layer 2 addresses.
 
+Note that this is a lower level protocol, then at this point there is no concept of
+ports, and this uses RAW sockets. For a sample implementation see: [here](https://github.com/yhoazk/LF331_V2/blob/master/network/arp/get_arp.cpp#L73)
+
 In IPv6 the functionality of ARP is provided by the Neighborg Discovery Protocol.
-
-
-
 
 ### ARP protocol layout
 
@@ -88,15 +88,15 @@ In IPv6 the functionality of ARP is provided by the Neighborg Discovery Protocol
 Speicfies the network protocol type. For example, ETH is 1.
 
 #### Protocol type (PTYPE)
-Specifies the internetwork protocol for which the ARP request is intended. IPv$ is `0x0800`.
+Specifies the internetwork protocol for which the ARP request is intended. IPv4 is `0x0800`.
 
 #### Hardware length (HLEN)
 
-length in octets of a hardware address. ETH address siye is 6.
+length in octets of a hardware address (MAC). ETH address siye is 6.
 
 #### Protocol length (PLEN)
 
-Length in octets of addresses used in the upper layer protocol. For IPv4 address siye is 4.
+Length in octets of addresses used in the upper layer protocol (IPv4 address). For IPv4 address siye is 4.
 
 #### Operation
 Specifies the operation that the sender is performing. 1 for request, 2 for reply.
@@ -104,8 +104,7 @@ Specifies the operation that the sender is performing. 1 for request, 2 for repl
 #### Sender HW address (SHA)
 
 Media address of the sender.
-- In a request this field is used to indicate the address
-of the host sending the request.
+- In a request this field is used to indicate the address of the host sending the request.
 - In a reply this field is used to indicate the address of the host that request was looking for.
 
 #### Sender protocol address (SPA)
