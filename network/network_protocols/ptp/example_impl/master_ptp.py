@@ -2,15 +2,27 @@
 
 import time
 import zmq
+import random
+from message_types import *
 
 context = zmq.Context()
-socket  = context.socket(zmq.REP)
-socket.bind("tcp://*:5555")
 
-while True:
+print("Connecting to hello world server")
+# socket = context.socket(zmq.REQ) half duplex
+socket = context.socket(zmq.PAIR)
+#socket.connect("tcp://192.168.0.129:5555")
+socket.connect("tcp://localhost:5555")
+
+master_offset = random.randint(45, 200)
+
+for request in range(10):
+    ts_sync = time.time() + master_offset
+    print(f"Send Sync message at {ts_sync}")
+    socket.send(b"Hello")
+
     message = socket.recv()
-    print(f"Message received: {message}")
+    print(f"Received {message}")
 
-    time.sleep(1)
 
-    socket.send(b"world")
+
+
