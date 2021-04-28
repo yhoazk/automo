@@ -109,7 +109,7 @@ switches/hubs/routers etc
 
 This mechanisms uses a port-base peer delay message. Each port on a PTP devies sends peer delay request messages to the port it is directly connected to. The connected port then responds with a peer delay response message. The reuqesting port finally stores the propagation delay measured between the 2 ports. All ports in a PTP aware metwork must use the same delay mechanism. This implies taht only complete PTP aware networks must use the same delay mechanism. Furthermore, P§P is often mentioned when the capability of a PTP transparent clock devide is specified since such devices are required in a switched / routed network using P2P mechanism.
 
-The final calculation of the propagation delay between master and slave is done by each transparent clokc by adding the receiving port peer delay and the residence time of the packet in the device to the correction field of the PTP event message, for instance a synchronization message. In this way sudden changes in the propagation path have a very small impact on the synchronization of slaves.
+The final calculation of the propagation delay between master and slave is done by each transparent clock by adding the receiving port peer delay and the residence time of the packet in the device to the correction field of the PTP event message, for instance a synchronization message. In this way sudden changes in the propagation path have a very small impact on the synchronization of slaves.
 
 
 ### **End-to-End** vs **Peer-to-Peer**
@@ -123,7 +123,30 @@ Peer-to-peer should be preferred, but every node in the network needs to be
 end-to-end should be used.
 
 
+### Frequency tunning
 
+The frequency error can be calculated with two pairs of `sync` and `fup` messages and the next equation:
+
+
+
+#### API's used in linux
+
+two APIs are available to change the frequency in the clock:
+
+- `man 2 adjtimex`
+- `man 2 clock_adjtime`
+
+Since the change is not applied immediately the value needs to be sampled from the offset in the clock. This change is capped to (-32768000, +32768000 ppm)
+### Error filtering
+
+ptp4l implements two filters to reduce the noise in the measurement:
+
+- moving median
+- moving average
+
+
+
+### How to measure the quality of a PTP implementation
 
 [src](https://doc.opensuse.org/documentation/leap/tuning/html/book.sle.tuning/cha.tuning.ptp.html)
 [hw support](http://linuxptp.sourceforge.net/)
