@@ -148,5 +148,15 @@ ptp4l implements two filters to reduce the noise in the measurement:
 
 ### How to measure the quality of a PTP implementation
 
+### Enable HW timestamping in linux
+### Join L2 multicast group
+
+What are the characteristics of the PTP traffic?
+
+- it does not get fordwarded by default since
+- On SW bridges, a specific flag needs to be enabled so they get fwd 
+- how to test PTP in qemu
+- `mknod ptp0 c 250 0`
+
 [src](https://doc.opensuse.org/documentation/leap/tuning/html/book.sle.tuning/cha.tuning.ptp.html)
 [hw support](http://linuxptp.sourceforge.net/)
